@@ -47,11 +47,11 @@
             <h3 class="mt-4">Tìm kiếm sách</h3>
             <div class="row mt-4">
                 <div class="col-md-6">
-                    <form>
+                    <form th:action="@{/home/find-book}" method="post">
                         <div class="input-group mb-3">
                             <input type="text" class="form-control" th:value="${keyword}" name="keyword" placeholder="Nhập tên sách, tác giả, hoặc thể loại">
                             <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit" th:href="@{/home/find-book}"><i class="fas fa-search"></i> Tìm kiếm
+                                <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> Tìm kiếm
                                 </button>
                             </div>
                         </div>

@@ -63,11 +63,11 @@ public class HomeController {
         return modelAndView;
     }
 
-//    @GetMapping("/home/find-book")
-//    public String getFindBook(){
-//        return "book-view/find-book";
-//    }
-    @RequestMapping ("/home/find-book")
+    @GetMapping("/home/find-book")
+    public String getFindBook(){
+        return "book-view/find-book";
+    }
+    @PostMapping ("/home/find-book")
     public ModelAndView searchBook(@RequestParam("keyword") String keyword) {
         List<Book> books = bookService.searchBook(keyword);
         ModelAndView modelAndView = new ModelAndView( "book-view/find-book");
