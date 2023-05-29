@@ -16,4 +16,8 @@ public class LibrarianService {
         }
         return false;
     }
+
+    public Librarian getById(Long id){
+        return librarianRepository.findById(id).orElse(null);
+    }
 }

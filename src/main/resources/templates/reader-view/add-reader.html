@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Hệ thống quản lý thư viện</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand h3 ml-auto" href="#"><b>Hệ thống quản lý thư viện</b></a>
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/logout}">Logout</a>
+        </li>
+    </ul>
+</nav>
+<div class="container">
+
+    <div class="row mt-4">
+        <div class="col-md-2.5">
+            <div class="list-group">
+                <a th:href="@{/home/readers}"  class="list-group-item list-group-item-action border-0">
+                    <i class="fas fa-book mr-2 text-primary"></i> <b class="text-primary">Quản lý độc giả</b>
+                </a>
+                <a th:href="@{/home/find-reader}" class="list-group-item list-group-item-action border-0">
+                    <i class="fas fa-search mr-2"></i> Tìm kiếm độc giả
+                </a>
+                <a th:href="@{/home/add-reader}" class="list-group-item list-group-item-action border-0">
+                    <i class="fas fa-plus mr-2"></i> Đăng ký độc giả mới
+                </a>
+                <a th:href="@{/home/history}" class="list-group-item list-group-item-action border-0">
+                    <i class="fas fa-history mr-2"></i> Lịch sử mượn - trả sách
+                </a>
+                <a th:href="@{/home}" class="list-group-item list-group-item-action border-0">
+                    <i class="fas fa-home mr-2"></i> Quay lại trang chủ
+                </a>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <h3 class="mt-4">Thêm sách</h3>
+            <div th:if="${successMsg}!= null" class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong th:text="${successMsg}"></strong>
+            </div>
+
+            <div th:if="${errorMsg}!= null" class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong th:text="${errorMsg}"></strong>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <form method="post" th:action="@{/home/add-reader}">
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">Họ tên</label>
+                            <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Nhập mã sách">
+                        </div>
+                        <div class="mb-3">
+                            <label for="birthday" class="form-label">Ngày sinh</label>
+                            <input type="text" class="form-control" id="birthday" name="birthday" placeholder="Nhập tên sách">
+                        </div>
+                        <div class="mb-3">
+                            <label for="cccd" class="form-label">CCCD</label>
+                            <input type="text" class="form-control" id="cccd" name="cccd" placeholder="Nhập tên tác giả">
+                        </div>
+                        <div class="mb-3">
+                            <label for="phoneNumber" class="form-label">SĐT</label>
+                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Nhập tên thể loại">
+                        </div>
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Địa chỉ</label>
+                            <input type="number" class="form-control" id="address" name="address" placeholder="Nhập số lượng">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Đăng ký</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

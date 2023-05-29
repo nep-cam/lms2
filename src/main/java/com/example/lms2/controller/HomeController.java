@@ -58,7 +58,6 @@ public class HomeController {
         }
         else {
             modelAndView.addObject("errorMsg", "Fail add a book. The book code is exist!");
-
         }
         return modelAndView;
     }

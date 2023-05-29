@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Hệ thống quản lý thư viện</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand h3 ml-auto" href="#"><b>Hệ thống quản lý thư viện</b></a>
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/logout}">Logout</a>
+        </li>
+    </ul>
+</nav>
+<div class="container">
+
+    <div class="row mt-4">
+        <div class="col-md-2.5">
+            <div class="list-group">
+                <a th:href="@{/home}" class="list-group-item list-group-item-action border-0">
+                    <i class="fas fa-book mr-2 text-primary"></i> <b class="text-primary">Quản lý độc giả</b>
+                </a>
+                <a th:href="@{/home}" class="list-group-item list-group-item-action border-0">
+                    <i class="fas fa-search mr-2"></i> Tìm kiếm
+                </a>
+                <a th:href="@{/home/create-loan}" class="list-group-item list-group-item-action border-0">
+                    <i class="fas fa-plus mr-2"></i> Đăng ký mượn sách
+                </a>
+                <a th:href="@{/home}" class="list-group-item list-group-item-action border-0">
+                    <i class="fas fa-history mr-2"></i> Lịch sử mượn - trả sách
+                </a>
+                <a th:href="@{/home}" class="list-group-item list-group-item-action border-0">
+                    <i class="fas fa-home mr-2"></i> Quay lại trang chủ
+                </a>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <h3 class="mt-4">Phiếu mượn sách</h3>
+            <div th:if="${successMsg}!= null" class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong th:text="${successMsg}"></strong>
+            </div>
+
+            <div th:if="${errorMsg}!= null" class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong th:text="${errorMsg}"></strong>
+            </div>
+            <form method="post" th:action="@{/home/create-loan}" th:object="${loan}">
+                <div class="mb-3">
+                    <label for="librarianId" class="form-label">Thủ thư</label>
+                    <input type="text" class="form-control" id="librarianId" name="librarianId"
+                           placeholder="Nhập mã thủ thư">
+                </div>
+                <div class="mb-3">
+                    <label for="readerId" class="form-label">Người mượn</label>
+                    <input type="text" class="form-control" id="readerId" name="readerId" placeholder="Nhập mã độc giả">
+                </div>
+                <div class="mb-3">
+                    <label for="createDate" class="form-label">Ngày mượn</label>
+                    <input type="date" class="form-control" id="createDate" name="createDate"
+                           th:value="${createDate}">
+                </div>
+                <div class="mb-3">
+                    <label for="dueDate" class="form-label">Hạn mượn (mặc định là 7 ngày sau)</label>
+                    <input type="date" class="form-control" id="dueDate" name="dueDate"
+                           th:value="${dueDate}">
+                </div>
+                <hr>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control " id="bookCode" name="bookCode" placeholder="Nhập mã sách">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button" onclick="addBook()"><i class="fas fa-plus"></i> Thêm
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Danh sách mượn: </label>
+
+                    <table class="table table-striped" id="bookTable" name="books">
+                        <thead>
+                        <tr>
+                            <th>Mã sách</th>
+                            <th>Tên sách</th>
+                            <th>Tác giả</th>
+                            <th>Thể loại</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                    </table>
+                </div>
+            </form>
+            <button type="submit"  class="btn btn-primary">Đăng ký mượn</button>
+            </form>
+        </div>
+
+    </div>
+</div>
+</body>
+<script>
+    function addBook() {
+        var code = $("#bookCode").val();
+        $.post({
+            url: "/home/slip/add-book",
+            dataType: "json",
+            contentType: "application/json",
+            data: code,
+            success: function (response) {
+                alert("Thêm Sách thành công");
+                console.log(response);
+                var row = "<tr>" +
+                    "<td>" + response.bookCode + "</td>" +
+                    "<td>" + response.nameBook + "</td>" +
+                    "<td>" + response.author + "</td>" +
+                    "<td>" + response.category + "</td>" +
+                    "</tr>";
+                $("#bookTable").append(row);
+            },
+            error: function (xhr) {
+                alert("Error");
+                alert(xhr)
+            }
+        })
+    }
+    function creatLoanSlip(){
+        var librarianId = $("#librarianId").val();
+        var readerId = $("#readerId").val();
+        var bookCodes = [];
+        var createDate = $("#createDate").val();
+        var dueDate = $("#dueDate").val();
+
+        $("#bookTable tr").each(function () {
+            var columnValue = $(this).find('td:nth-child(1)').text();
+            bookCodes.push(columnValue);
+        });
+
+        var data = {
+            librarianId: librarianId,
+            readerId: readerId,
+            bookCodes : bookCodes,
+            createDate : createDate,
+            dueDate : dueDate
+        };
+        console.log(data);
+        $.post({
+            url: "/home/create-loan",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function (response) {
+
+                console.log(response);
+            },
+            error: function (xhr) {
+                alert("Error");
+                alert(xhr)
+            }
+        })
+
+    }
+
+</script>
+</html>

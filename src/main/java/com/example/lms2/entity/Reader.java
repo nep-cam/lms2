@@ -30,7 +30,7 @@ public class Reader {
     @Column(name = "dia_chi")
     private String address;
     @Column(name = "sdt")
-    private String phonenumber;
+    private String phoneNumber;
     @Column(name = "ngay_lap")
     private LocalDate createdDate;
 }

@@ -15,29 +15,27 @@ import java.util.Set;
 @Setter
 
 @Entity
-@Table(name = "phieumuon")
-public class PhieuMuon {
+@Table(name = "phieutra")
+public class PaySlip {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ma_phieu_muon")
+    @Column(name="ma_phieu_tra")
     private Long id;
-    @Column(name="ngay_muon")
+    @Column(name="ngay_tra")
     private LocalDateTime createdDate;
-    @Column(name = "han_muon")
-    private LocalDateTime dueDate;
-    @Column(name = "trang_thai")
-    private String status;
 
     @ManyToOne()
-    @JoinColumn(name="nguoi_muon")
-    private Reader reader;
+    @JoinColumn(name = "ma_phieu_muon")
+    private LoanSlip callSlip;
+
     @ManyToOne()
-    @JoinColumn(name="nguoi_lap_phieu")
+    @JoinColumn(name = "nguoi_lap_phieu")
     private Librarian librarian;
+
     @ManyToMany
     @JoinTable(
-            name = "chi_tiet_phieu_muon",
-            joinColumns = @JoinColumn(name = "ma_phieu_muon"),
+            name = "chi_tiet_phieu_tra",
+            joinColumns = @JoinColumn(name = "ma_phieu_tra"),
             inverseJoinColumns = @JoinColumn(name = "ma_sach"))
     Set<Book> bookSet;
 }
