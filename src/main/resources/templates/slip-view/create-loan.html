@@ -77,7 +77,8 @@
                 <div class="input-group mb-3">
                     <input type="text" class="form-control " id="bookCode" name="bookCode" placeholder="Nhập mã sách">
                     <div class="input-group-append">
-                        <button class="btn btn-primary" type="button" onclick="addBook()"><i class="fas fa-plus"></i> Thêm
+                        <button class="btn btn-primary" type="button" onclick="addBook()"><i class="fas fa-plus"></i>
+                            Thêm
                         </button>
                     </div>
                 </div>
@@ -85,7 +86,7 @@
                 <div class="mb-3">
                     <label class="form-label">Danh sách mượn: </label>
 
-                    <table class="table table-striped" id="bookTable" name="books">
+                    <table class="table table-striped" id="bookTable">
                         <thead>
                         <tr>
                             <th>Mã sách</th>
@@ -99,7 +100,7 @@
                     </table>
                 </div>
             </form>
-            <button type="submit"  class="btn btn-primary">Đăng ký mượn</button>
+            <button type="button" onclick="creatLoanSlip()" class="btn btn-primary">Đăng ký mượn</button>
             </form>
         </div>
 
@@ -131,7 +132,8 @@
             }
         })
     }
-    function creatLoanSlip(){
+
+    function creatLoanSlip() {
         var librarianId = $("#librarianId").val();
         var readerId = $("#readerId").val();
         var bookCodes = [];
@@ -146,9 +148,9 @@
         var data = {
             librarianId: librarianId,
             readerId: readerId,
-            bookCodes : bookCodes,
-            createDate : createDate,
-            dueDate : dueDate
+            bookCodes: bookCodes,
+            createDate: createDate,
+            dueDate: dueDate
         };
         console.log(data);
         $.post({
@@ -157,7 +159,8 @@
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function (response) {
-
+                var str = "Success";
+                alert(str);
                 console.log(response);
             },
             error: function (xhr) {

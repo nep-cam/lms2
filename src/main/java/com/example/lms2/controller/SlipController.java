@@ -38,7 +38,7 @@ public class SlipController {
     LoanSlipService loanSlipService;
 
     @PostMapping("/home/create-loan")
-    public ModelAndView createLoan(@RequestBody CreateLoanSlip createLoanSlip, Model model) {
+    public ResponseEntity createLoan(@RequestBody CreateLoanSlip createLoanSlip, Model model) {
         LoanSlip loanSlip = new LoanSlip();
         Librarian librarian = librarianService.getById(createLoanSlip.getLibrarianId());
         Reader reader = readerService.getById(createLoanSlip.getReaderId());
@@ -60,11 +60,7 @@ public class SlipController {
         loanSlip.setDueDate(dueDate);
         loanSlip.setStatus("dang muon");
         loanSlipService.createdLoanSlip(loanSlip);
-        ModelAndView modelAndView = new ModelAndView("slip-view/create-loan");
-        modelAndView.addObject("successMsg", loanSlip.toString());
-//        model.addAttribute("");
-        modelAndView.setStatus(HttpStatus.CREATED);
-        return modelAndView;
+        return ResponseEntity.ok(loanSlip);
     }
 
     @GetMapping("/home/create-loan")
