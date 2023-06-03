@@ -23,17 +23,17 @@
   <div class="row mt-4">
     <div class="col-md-2.5">
       <div class="list-group">
-        <a th:href="@{/home/readers}"  class="list-group-item list-group-item-action border-0">
-          <i class="fas fa-book mr-2 text-primary"></i> <b class="text-primary">Quản lý độc giả</b>
+        <a th:href="@{/home/reader/readers}"  class="list-group-item list-group-item-action border-0">
+          <i class="fas fa-book mr-2 "></i>Quản lý độc giả
         </a>
-        <a th:href="@{/home/find-reader}" class="list-group-item list-group-item-action border-0">
-          <i class="fas fa-search mr-2"></i> Tìm kiếm độc giả
+        <a th:href="@{/home/reader/find-reader}" class="list-group-item list-group-item-action border-0">
+          <i class="fas fa-search mr-2 text-primary"> </i> <b class="text-primary">Tìm kiếm độc giả</b>
         </a>
-        <a th:href="@{/home/add-reader}" class="list-group-item list-group-item-action border-0">
+        <a th:href="@{/home/reader/add-reader}" class="list-group-item list-group-item-action border-0">
           <i class="fas fa-plus mr-2"></i> Đăng ký độc giả mới
         </a>
-        <a th:href="@{/home/history}" class="list-group-item list-group-item-action border-0">
-          <i class="fas fa-history mr-2"></i> Lịch sử mượn - trả sách
+        <a th:href="@{/home/reader/history}" class="list-group-item list-group-item-action border-0">
+          <i class="fas fa-history mr-2"></i> Lịch sử mượn sách
         </a>
         <a th:href="@{/home}" class="list-group-item list-group-item-action border-0">
           <i class="fas fa-home mr-2"></i> Quay lại trang chủ
@@ -44,9 +44,10 @@
       <h3 class="mt-4">Tìm kiếm độc giả</h3>
       <div class="row mt-4">
         <div class="col-md-6">
-          <form th:action="@{/home/find-reader}" method="post">
+          <form th:action="@{/home/reader/find-reader}" method="post">
             <div class="input-group mb-3">
-              <input type="text" class="form-control" th:value="${keyword}" name="keyword" placeholder="Nhập mã độc giả">
+              <input type="text" class="form-control" th:value="${idReader}" name="idReader" placeholder="mã độc giả">
+              <input type="text" class="form-control" th:value="${nameReader}" name="nameReader" placeholder="tên độc giả">
               <div class="input-group-append">
                 <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> Tìm kiếm
                 </button>
@@ -81,12 +82,11 @@
                 <td th:text="${reader.fullName}"></td>
                 <td th:text="${reader.birthday}"></td>
                 <td th:text="${reader.cccd}"></td>
-                <td th:text="${reader.phonenumber}"></td>
+                <td th:text="${reader.phoneNumber}"></td>
                 <td th:text="${reader.address}"></td>
                 <td th:text="${reader.createdDate}"></td>
 
               </tr>
-              <!-- Các dòng dữ liệu sách khác -->
               </tbody>
             </table>
           </div>

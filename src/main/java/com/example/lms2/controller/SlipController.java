@@ -1,6 +1,7 @@
 package com.example.lms2.controller;
 
 import com.example.lms2.dto.CreateLoanSlip;
+import com.example.lms2.dto.LoanSlipDto;
 import com.example.lms2.entity.Book;
 import com.example.lms2.entity.Librarian;
 import com.example.lms2.entity.LoanSlip;
@@ -10,17 +11,18 @@ import com.example.lms2.service.LibrarianService;
 import com.example.lms2.service.LoanSlipService;
 import com.example.lms2.service.ReaderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,9 +38,36 @@ public class SlipController {
     LibrarianService librarianService;
     @Autowired
     LoanSlipService loanSlipService;
+    @GetMapping("/home/loan-slip/create-loan")
+    public String getCreateLoan(Model model) {
+        LocalDate date = LocalDate.now();
+        LocalDate dueDate = date.plusDays(7);
+        model.addAttribute("createDate", date);
+        model.addAttribute("dueDate", dueDate);
+        return "slip-view/create-loan";
+    }
 
-    @PostMapping("/home/create-loan")
-    public ResponseEntity createLoan(@RequestBody CreateLoanSlip createLoanSlip, Model model) {
+    @GetMapping("/home/loan-slip/loan-slips")
+    public ModelAndView getLoanSlip(@RequestParam(defaultValue = "0") Integer pageNo,
+                              @RequestParam(defaultValue = "10") Integer pageSize) {
+        ModelAndView modelAndView = new ModelAndView( "slip-view/loan-slip");
+        Page<LoanSlip> loanSlips = loanSlipService.getAll(pageNo, pageSize);
+        List<LoanSlipDto> loans = new ArrayList<>();
+        for(LoanSlip loanSlip : loanSlips.getContent()){
+            loans.add(new LoanSlipDto(loanSlip));
+        }
+        Page<LoanSlipDto> dtos= new PageImpl<>(loans, loanSlips.getPageable(), loanSlips.getTotalElements());
+        modelAndView.addObject("loanSlips", dtos);
+        return modelAndView;
+    }
+
+    @GetMapping("/home/loan-slip/find-loan")
+    public String getFindLoan() {
+        return "slip-view/find-loan";
+    }
+
+    @PostMapping("/api/create-loan")
+    public ResponseEntity createLoan(@RequestBody CreateLoanSlip createLoanSlip) {
         LoanSlip loanSlip = new LoanSlip();
         Librarian librarian = librarianService.getById(createLoanSlip.getLibrarianId());
         Reader reader = readerService.getById(createLoanSlip.getReaderId());
@@ -60,20 +89,11 @@ public class SlipController {
         loanSlip.setDueDate(dueDate);
         loanSlip.setStatus("dang muon");
         loanSlipService.createdLoanSlip(loanSlip);
-        return ResponseEntity.ok(loanSlip);
+        LoanSlipDto response = new LoanSlipDto(loanSlip);
+        return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/home/create-loan")
-    public String getCreateLoan(Model model) {
-
-        LocalDate date = LocalDate.now();
-        LocalDate dueDate = date.plusDays(7);
-        model.addAttribute("createDate", date);
-        model.addAttribute("dueDate", dueDate);
-        return "slip-view/create-loan";
-    }
-
-    @RequestMapping("/home/slip/add-book")
+    @RequestMapping("/api/create-loan/add-book")
     public ResponseEntity getBook(@RequestBody String code) {
         Book book = bookService.getByBookCode(code);
         return ResponseEntity.ok(book);

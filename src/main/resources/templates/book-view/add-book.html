@@ -26,15 +26,15 @@
   <div class="row mt-4">
     <div class="col-md-2.5">
       <div class="list-group">
-        <a  th:href="@{/home/books}" class="list-group-item list-group-item-action border-0">
+        <a  th:href="@{/home/book/books}" class="list-group-item list-group-item-action border-0">
           <i class="fas fa-book mr-2 "></i>
           Quản lý sách
         </a>
 
-        <a  th:href="@{/home/find-book}" class="list-group-item list-group-item-action border-0">
+        <a  th:href="@{/home/book/find-book}" class="list-group-item list-group-item-action border-0">
           <i class="fas fa-search mr-2 "></i> Tìm sách
         </a>
-        <a  th:href="@{/home/add-book}" class="list-group-item list-group-item-action border-0">
+        <a  th:href="@{/home/book/add-book}" class="list-group-item list-group-item-action border-0">
           <i class="fas fa-plus mr-2 text-primary"></i> <b class="text-primary">Thêm sách</b>
         </a>
         <a  th:href="@{/home}" class="list-group-item list-group-item-action border-0">
@@ -55,7 +55,7 @@
       </div>
       <div class="row mt-4">
         <div class="col-md-6">
-          <form method="post" th:action="@{/home/add-book}">
+          <form method="post" th:action="@{/home/book/add-book}">
             <div class="mb-3">
               <label for="bookCode" class="form-label">Mã sách</label>
               <input type="text" class="form-control" id="bookCode" name="bookCode" placeholder="Nhập mã sách">

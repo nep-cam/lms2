@@ -11,6 +11,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.List;
+
 @Service
 public class ReaderService {
     @Autowired
@@ -27,4 +30,12 @@ public class ReaderService {
     public Page<Reader> getAll(Integer pageNo, Integer pageSize){
         Pageable paging = PageRequest.of(pageNo, pageSize);
         return readerRepository.findAll(paging);}
+
+    public List<Reader> getByIdOrFullName( Long id, String name) {
+        return readerRepository.findDistinctReaderByIdOrFullName(id, name);
+    }
+
+    public boolean checkReader(Reader reader) {
+        return true;
+    }
 }

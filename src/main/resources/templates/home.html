@@ -28,7 +28,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Quản lý sách</h5>
                         <p class="card-text">Thêm, sửa, tìm kiếm sách trong thư viện.</p>
-                        <a th:href="@{/home/books}" class="btn btn-primary">Đến trang quản lý sách</a>
+                        <a th:href="@{/home/book/books}" class="btn btn-primary">Đến trang quản lý sách</a>
                     </div>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Quản lý độc giả</h5>
                         <p class="card-text">Thêm, sửa, tìm kiếm thông tin độc giả.</p>
-                        <a href="#" class="btn btn-primary">Đến trang quản lý độc giả</a>
+                        <a th:href="@{/home/reader/readers}" class="btn btn-primary">Đến trang quản lý độc giả</a>
                     </div>
                 </div>
             </div>
@@ -58,7 +58,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Thao tác mượn sách</h5>
                         <p class="card-text">Tạo, tìm kiếm phiếu mượn sách.</p>
-                        <a href="#" class="btn btn-primary">Đến trang quản lý phiếu mượn</a>
+                        <a th:href="@{/home/loan-slip/loan-slips}" class="btn btn-primary">Đến trang quản lý phiếu mượn</a>
                     </div>
                 </div>
             </div>
@@ -67,7 +67,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Thao tác trả sách</h5>
                         <p class="card-text">Tạo, tìm kiếm phiếu trả sách.</p>
-                        <a href="#" class="btn btn-primary">Đến trang quản lý phiếu trả</a>
+                        <a th:href="@{/home/pay-slip/pay-slips}" class="btn btn-primary">Đến trang quản lý phiếu trả</a>
                     </div>
                 </div>
             </div>

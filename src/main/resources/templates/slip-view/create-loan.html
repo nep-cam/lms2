@@ -25,17 +25,15 @@
     <div class="row mt-4">
         <div class="col-md-2.5">
             <div class="list-group">
-                <a th:href="@{/home}" class="list-group-item list-group-item-action border-0">
-                    <i class="fas fa-book mr-2 text-primary"></i> <b class="text-primary">Quản lý độc giả</b>
+                <a th:href="@{/home/loan-slip/loan-slips}" class="list-group-item list-group-item-action border-0">
+                    <i class="fas fa-book mr-2 text-primary"></i> <b class="text-primary">Quản lý mượn sách</b>
                 </a>
-                <a th:href="@{/home}" class="list-group-item list-group-item-action border-0">
-                    <i class="fas fa-search mr-2"></i> Tìm kiếm
-                </a>
-                <a th:href="@{/home/create-loan}" class="list-group-item list-group-item-action border-0">
+
+                <a th:href="@{/home/loan-slip/create-loan}" class="list-group-item list-group-item-action border-0">
                     <i class="fas fa-plus mr-2"></i> Đăng ký mượn sách
                 </a>
-                <a th:href="@{/home}" class="list-group-item list-group-item-action border-0">
-                    <i class="fas fa-history mr-2"></i> Lịch sử mượn - trả sách
+                <a th:href="@{/home/loan-slip/find-loan}" class="list-group-item list-group-item-action border-0">
+                    <i class="fas fa-search mr-2"></i> Tìm kiếm
                 </a>
                 <a th:href="@{/home}" class="list-group-item list-group-item-action border-0">
                     <i class="fas fa-home mr-2"></i> Quay lại trang chủ
@@ -44,16 +42,12 @@
         </div>
         <div class="col-md-9">
             <h3 class="mt-4">Phiếu mượn sách</h3>
-            <div th:if="${successMsg}!= null" class="alert alert-success alert-dismissible">
+            <div style="display: none" id="success-msg" class="alert alert-success alert-dismissible">
                 <button type="button" class="close" data-dismiss="alert">×</button>
-                <strong th:text="${successMsg}"></strong>
+                <strong></strong>
             </div>
 
-            <div th:if="${errorMsg}!= null" class="alert alert-danger alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                <strong th:text="${errorMsg}"></strong>
-            </div>
-            <form method="post" th:action="@{/home/create-loan}" th:object="${loan}">
+            <form>
                 <div class="mb-3">
                     <label for="librarianId" class="form-label">Thủ thư</label>
                     <input type="text" class="form-control" id="librarianId" name="librarianId"
@@ -93,6 +87,7 @@
                             <th>Tên sách</th>
                             <th>Tác giả</th>
                             <th>Thể loại</th>
+                            <th>#</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -101,6 +96,7 @@
                 </div>
             </form>
             <button type="button" onclick="creatLoanSlip()" class="btn btn-primary">Đăng ký mượn</button>
+            <button class="btn btn-primary" type="button" onclick="window.location.reload();">Tải lại trang</button>
             </form>
         </div>
 
@@ -111,19 +107,21 @@
     function addBook() {
         var code = $("#bookCode").val();
         $.post({
-            url: "/home/slip/add-book",
+            url: "/api/create-loan/add-book",
             dataType: "json",
             contentType: "application/json",
             data: code,
             success: function (response) {
                 alert("Thêm Sách thành công");
                 console.log(response);
-                var row = "<tr>" +
-                    "<td>" + response.bookCode + "</td>" +
-                    "<td>" + response.nameBook + "</td>" +
-                    "<td>" + response.author + "</td>" +
-                    "<td>" + response.category + "</td>" +
-                    "</tr>";
+                var row = '<tr>' +
+                    '<td>' + response.bookCode + '</td>' +
+                    '<td>' + response.nameBook + '</td>' +
+                    '<td>' + response.author + '</td>' +
+                    '<td>' + response.category + '</td>' +
+                    '<td>' + '<button type="button" class="btn btn-danger fas fa-remove" onclick="removeRow()"></button>' + '</td>' +
+                    '</tr>';
+                alert(row);
                 $("#bookTable").append(row);
             },
             error: function (xhr) {
@@ -154,22 +152,38 @@
         };
         console.log(data);
         $.post({
-            url: "/home/create-loan",
+            url: "/api/create-loan",
             dataType: "json",
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function (response) {
-                var str = "Success";
-                alert(str);
+
+                var successMsg = "<strong>" + "Success" + "</strong>";
+                successMsg += "<p>" + "Mã phiếu mượn: " + response.id + "</p>";
+                successMsg += "<p>" + "Người lập phiếu (thủ thư): " + response.librarian + "</p>";
+                successMsg += "<p>" + "Người mượn (độc giả): " + response.reader + "</p>";
+                successMsg += "<p>" + "Ngày mượn: " + response.createDate + "</p>";
+                successMsg += "<p>" + "Hạn mượn: " + response.dueDate + "</p>";
+                successMsg += "<p>" + "Danh sách mượn: " + response.books + "</p>";
+
+                // alert(successMsg);
+
+                $("#success-msg strong").append(successMsg);
+                $("#success-msg").show();
+
                 console.log(response);
             },
             error: function (xhr) {
                 alert("Error");
-                alert(xhr)
+                alert(xhr);
             }
         })
-
     }
 
+    function removeRow() {
+        var button = $(event.currentTarget);
+        var row = button.closest("tr");
+        row.remove();
+    }
 </script>
 </html>
