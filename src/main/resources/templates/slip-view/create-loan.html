@@ -37,7 +37,7 @@
         </a>
 
         <a th:href="@{/home/loan-slip/create-loan(username=${username})}" class="list-group-item list-group-item-action border-0">
-            <i class="fas fa-plus mr-2 text-primary"></i> <b class="text-primary">Đăng ký mượn sách</b>
+            <i class="fas fa-plus mr-2 text-light"></i> <b class="text-light">Đăng ký mượn sách</b>
         </a>
         <a th:href="@{/home/loan-slip/find-loan(username=${username})}" class="list-group-item list-group-item-action border-0">
             <i class="fas fa-search mr-2"></i> Tìm kiếm
@@ -105,7 +105,7 @@
                 <div class="loan-btn d-flex justify-content-center">
                     <button type="button" class="btn btn-primary form-btn" onclick="creatLoanSlip()">Đăng ký
                         mượn</button>
-                    <button class="btn btn-primary form-btn" th:href="@{/home/loan-slip/create-loan(username=${username})}">Tải
+                    <button class="btn btn-primary form-btn" onclick="window.location.reload();">Tải
                         lại
                         trang</button>
                 </div>

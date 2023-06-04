@@ -54,7 +54,8 @@ public class HomeController {
 
     @GetMapping("/home")
     public String getHome(@RequestParam("username") String username, Model model) {
-
+        Librarian librarian = librarianService.getByFullName(username);
+        model.addAttribute("librarian", librarian);
         model.addAttribute("username", username);
         return "home";
     }

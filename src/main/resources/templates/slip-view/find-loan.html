@@ -39,7 +39,7 @@
             <i class="fas fa-plus mr-2"></i>Đăng ký mượn sách
         </a>
         <a th:href="@{/home/loan-slip/find-loan(username=${username})}" class="list-group-item list-group-item-action border-0">
-            <i class="fas fa-search mr-2 text-primary"></i> <b class="text-primary">Tìm kiếm</b>
+            <i class="fas fa-search mr-2 text-light"></i> <b class="text-light">Tìm kiếm</b>
         </a>
         <a th:href="@{/home(username=${username})}" class="list-group-item list-group-item-action border-0">
             <i class="fas fa-home mr-2"></i>Quay lại trang chủ
@@ -50,9 +50,9 @@
             <div class="col-8">
                 <form th:action="@{/home/loan-slip/find-loan(username=${username})}" method="post">
                     <div class="find-search input-group mb-3">
-                        <input type="text" class="form-control" th:value="${idSlip}" name="idSlip"
+                        <input type="text" class="form-control"  name="idSlip"
                                placeholder="mã phiếu mượn" autofocus>
-                        <input type="text" class="form-control" th:value="${idReder}" name="idReader"
+                        <input type="text" class="form-control" name="idReader"
                                placeholder="mã độc giả">
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>

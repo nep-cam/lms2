@@ -51,8 +51,7 @@ public class LoanSlipController {
         for (LoanSlip loanSlip : loanSlipService.getByIdOrReader(id, reader)){
             dtos.add(new LoanSlipDto(loanSlip));
         }
-        modelAndView.addObject("idSlip", id );
-        modelAndView.addObject("idReader", idReader);
+
         modelAndView.addObject("loanSlips", dtos);
         modelAndView.addObject("username", username);
 

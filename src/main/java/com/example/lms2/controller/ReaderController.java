@@ -27,8 +27,6 @@ public class ReaderController {
         ModelAndView modelAndView = new ModelAndView( "reader-view/find-reader");
         List<Reader> readers = readerService.getByIdOrFullName(id, name);
         modelAndView.addObject("readers", readers);
-        modelAndView.addObject("idReader", id);
-        modelAndView.addObject("nameReader", name);
         modelAndView.addObject("username", username);
 
         return modelAndView;

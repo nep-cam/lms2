@@ -49,8 +49,7 @@ public class PaySlipController {
         for (PaySlip paySlip: paySlipService.getByIdOrLoanSlip(idPay, loanSlip)){
             dtos.add(new PaySlipDto(paySlip));
         }
-        modelAndView.addObject("idPay", idPay );
-        modelAndView.addObject("idLoan", idLoan);
+
         modelAndView.addObject("paySlips", dtos);
         modelAndView.addObject("username", username);
 

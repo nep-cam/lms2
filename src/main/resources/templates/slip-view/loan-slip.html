@@ -34,7 +34,7 @@
 
         </div>
         <a th:href="@{/home/loan-slip/loan-slips(username=${username})}" class="list-group-item list-group-item-action border-0">
-            <i class="fas fa-book mr-2 text-primary"></i> <b class="text-primary">Quản lý mượn sách</b>
+            <i class="fas fa-book mr-2 text-light"></i> <b class="text-light">Quản lý mượn sách</b>
         </a>
         <a th:href="@{/home/loan-slip/create-loan(username=${username})}" class="list-group-item list-group-item-action border-0">
             <i class="fas fa-plus mr-2"></i> Đăng ký mượn sách
@@ -52,9 +52,7 @@
             <div class="col-8">
                 <div class="loan-results">
                     <table class="table-results">
-                        <div>
-                            <a id="pageSize" th:text="${loanSlips.getSize()}"></a>
-                        </div>
+
                         <tr>
                             <th>Mã phiếu</th>
                             <th>Người mượn</th>

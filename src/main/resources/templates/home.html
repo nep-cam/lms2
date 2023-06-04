@@ -62,19 +62,19 @@
                 <table>
                     <tr>
                         <td style="width: 30%;">Tên tài khoản</td>
-                        <td>Hoàng Hồng Cẩm</td>
+                        <td th:text="${librarian.fullName}"></td>
                     </tr>
                     <tr>
                         <td>E-mail</td>
-                        <td>camhh2606@gmail.com</td>
+                        <td th:text="${librarian.email}"></td>
                     </tr>
                     <tr>
                         <td>Điện thoại</td>
-                        <td>0123456789</td>
+                        <td th:text="${librarian.phone}">0123456789</td>
                     </tr>
                     <tr>
                         <td>Địa chỉ</td>
-                        <td>176 Trương Định, Hoàng Mai, Hà Nội</td>
+                        <td th:text="${librarian.address}">176 Trương Định, Hoàng Mai, Hà Nội</td>
                     </tr>
                 </table>
             </div>
