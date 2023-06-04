@@ -33,14 +33,5 @@ public class HomeController {
     }
 
 
-    @GetMapping("/home/pay-slip/pay-slips")
-    public String getPaySlip() {
-        return "slip-view/pay-slip";
-    }
-
-    @GetMapping("/home/pay-slip/find-pay")
-    public String getPayLoan() {
-        return "slip-view/find-pay";
-    }
 
 }

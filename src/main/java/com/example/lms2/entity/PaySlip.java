@@ -23,10 +23,9 @@ public class PaySlip {
     private Long id;
     @Column(name="ngay_tra")
     private LocalDateTime createdDate;
-
     @ManyToOne()
     @JoinColumn(name = "ma_phieu_muon")
-    private LoanSlip callSlip;
+    private LoanSlip loanSlip;
 
     @ManyToOne()
     @JoinColumn(name = "nguoi_lap_phieu")

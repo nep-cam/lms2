@@ -41,13 +41,13 @@
             </div>
         </div>
         <div class="col-md-9">
-            <h3 class="mt-4">Tìm kiếm độc giả</h3>
+            <h3 class="mt-4">Tìm kiếm phiếu mượn</h3>
             <div class="row mt-4">
-                <div class="col-md-6">
+                <div class="col-md-9">
                     <form th:action="@{/home/loan-slip/find-loan}" method="post">
                         <div class="input-group mb-3">
+                            <input type="text" class="form-control" th:value="${id}" name="id" placeholder="mã phiếu mượn">
                             <input type="text" class="form-control" th:value="${idReader}" name="idReader" placeholder="mã độc giả">
-                            <input type="text" class="form-control" th:value="${nameReader}" name="nameReader" placeholder="tên độc giả">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> Tìm kiếm
                                 </button>
@@ -62,7 +62,6 @@
                 <div class="row mt-4">
                     <div class="col-md-12">
                         <table class="table table-striped">
-
                             <thead>
                             <tr>
                                 <th>Mã phiếu</th>
@@ -71,12 +70,11 @@
                                 <th>Ngày mượn</th>
                                 <th>Hạn mượn</th>
                                 <th>Trạng thái</th>
-                                <th>Người lập</th>
+                                <th>Thủ thư</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="loanSlip, index : ${loanSlips}">
-                                <td th:text="${index.index + 1 }"></td>
+                            <tr th:each="loanSlip : ${loanSlips}">
                                 <td th:text="${loanSlip.id}"></td>
                                 <td th:text="${loanSlip.reader}"></td>
                                 <td th:text="${loanSlip.books}"></td>

@@ -1,10 +1,201 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Hệ thống quản lý thư viện</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand h3 ml-auto" href="#"><b>Hệ thống quản lý thư viện</b></a>
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/logout}">Logout</a>
+        </li>
+    </ul>
+</nav>
 
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-md-2.5">
+            <div class="list-group">
+                <a th:href="@{/home/pay-slip/pay-slips}" class="list-group-item list-group-item-action border-0">
+                    <i class="fas fa-book mr-2 text-primary"></i> <b class="text-primary">Quản lý trả sách</b>
+                </a>
+                <a th:href="@{/home/pay-slip/create-pay}" class="list-group-item list-group-item-action border-0">
+                    <i class="fas fa-plus mr-2"></i> Trả sách
+                </a>
+                <a th:href="@{/home/pay-slip/find-pay}" class="list-group-item list-group-item-action border-0">
+                    <i class="fas fa-search mr-2"></i> Tìm kiếm
+                </a>
+
+                <a th:href="@{/home}" class="list-group-item list-group-item-action border-0">
+                    <i class="fas fa-home mr-2"></i> Quay lại trang chủ
+                </a>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <h3 class="mt-4">Phiếu trả sách</h3>
+            <span> Thời gian: </span><span th:text="${datetime}"></span>
+            <hr>
+
+            <div style="display: none" id="success-msg" class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong></strong>
+            </div>
+
+            <label>Trả sách cho mã phiếu mượn sau</label>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="idSlip"
+                       placeholder="Nhập mã phiếu mượn">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button" onclick="findLoanSlip()"><i class="fas fa-search"></i>
+                        Tìm kiếm
+                    </button>
+                </div>
+            </div>
+            </form>
+
+            <div class="border">
+                <div class="container mt-3">
+                    <div id="loan-slip">
+                        <h5><b>Phiếu mượn</b></h5>
+                        <div></div>
+                        <!--                        <p th:text="${loanSlip.id}">Mã phiếu mượn:</p>-->
+                        <!--                        <p th:text="${loanSlip.librarian}">Người lập phiếu (thủ thư):</p>-->
+                        <!--                        <p th:text="${loanSlip.reader}">Người mượn (độc giả):</p>-->
+                        <!--                        <p th:text="${loanSlip.createDate}">Ngày mượn: </p>-->
+                        <!--                        <p th:text="${loanSlip.dueDate}">Hạn mượn: </p>-->
+                        <!--                        <p th:text="${loanSlip.books}">Danh sách mượn: </p>-->
+                    </div>
+                    <hr>
+                    <div>
+                        <p><b>Danh sách sách chưa trả trong phiếu mượn</b></p>
+                        <table class="table table-striped" id="books-to-pay">
+                            <thead>
+                            <tr>
+                                <th>Mã Sách</th>
+                                <th>Tên Sách</th>
+                                <th>#</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <form class="mb-3">
+                        <button type="button" onclick="createPaySlip()" class="btn btn-primary">Trả sách</button>
+                        <button class="btn btn-primary" type="button" onclick="window.location.reload();">Tải lại
+                            trang
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
 </body>
+<script>
+
+
+    function findLoanSlip() {
+        var idSlip = $("#idSlip").val();
+        alert(idSlip);
+        $.post({
+            url: "/api/pay-slip/find-loan-slip",
+            dataType: "json",
+            contentType: "application/json",
+            data: idSlip,
+            success: function (response) {
+                console.log(response);
+                var msg = "";
+                msg += "<p>" + "Mã phiếu mượn: " + response.id + "</p>";
+                msg += "<p>" + "Người lập phiếu (thủ thư): " + response.librarian.fullName + "</p>";
+                msg += "<p>" + "Người mượn (độc giả): " + response.reader.fullName + "</p>";
+                msg += "<p>" + "Ngày mượn: " + response.createDate + "</p>";
+                msg += "<p>" + "Hạn mượn: " + response.dueDate + "</p>";
+                msg += "<p>" + "Danh sách mượn: ";
+                var books = response.bookSet;
+                for (var i = 0; i < books.length; i++) {
+                    msg += '(' + books[i].bookCode + ')' + books[i].nameBook + ';';
+                }
+                msg += "</p>";
+                // alert(msg);
+                $("#loan-slip div").html(msg);
+
+            },
+            error: function (xhr) {
+                alert("Phiếu mượn không tồn tại.");
+                console.log(xhr);
+            }
+        })
+        $.post({
+            url: "/api/pay-slip/check-book",
+            dataType: "json",
+            contentType: "application/json",
+            data: idSlip,
+            success: function (response) {
+                console.log(response);
+                var row = ''
+                for (var i = 0; i < response.length; i++) {
+                    row += '<tr>' +
+                        '<td>' + response[i].bookCode + '</td>' +
+                        '<td>' + response[i].nameBook + '</td>' +
+                        '<td>' + '<input class="form-check-input" type="checkbox" id="check" name="check">' + '</td>' +
+                        '</tr>';
+                }
+
+                // alert(row);
+                $("#books-to-pay tbody").html(row);
+            },
+            error: function (xhr) {
+                alert("eeeeee");
+                console.log(xhr);
+            }
+        })
+    }
+
+    function createPaySlip() {
+        var idSlip = $("#idSlip").val();
+        var bookCodes = [];
+
+        $("#books-to-pay tbody tr").each(function () {
+
+            var checkbox = $(this).find('.form-check-input');
+            if (checkbox.is(':checked')) {
+                var columnValue = $(this).find('td:nth-child(1)').text();
+                bookCodes.push(columnValue);
+            }
+
+        });
+        var formData = new FormData;
+        formData.append("idSlip", idSlip);
+        formData.append("books", bookCodes);
+
+        console.log(formData);
+        $.post({
+            url: "/api/create-pay",
+            contentType: false,
+            processData: false,
+            cache: false,
+            data: formData,
+            success: function (response) {
+                alert(response);
+                console.log(response);
+            },
+            error: function (xhr) {
+                alert("Error");
+                alert(xhr);
+            }
+        })
+    }
+</script>
 </html>

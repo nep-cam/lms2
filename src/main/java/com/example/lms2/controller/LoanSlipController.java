@@ -13,7 +13,6 @@ import com.example.lms2.service.ReaderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +27,7 @@ import java.util.List;
 import java.util.Set;
 
 @Controller
-public class SlipController {
+public class LoanSlipController {
 
     @Autowired
     BookService bookService;
@@ -65,6 +64,23 @@ public class SlipController {
     public String getFindLoan() {
         return "slip-view/find-loan";
     }
+    @PostMapping("/home/loan-slip/find-loan")
+    public ModelAndView findLoan(@RequestParam(value = "id",required = false) Long id,
+                                 @RequestParam(value = "idReader", required = false) Long idReader){
+        ModelAndView modelAndView = new ModelAndView("slip-view/find-loan");
+        Reader reader = null;
+        if(idReader != null){
+            reader= readerService.getById(idReader);
+        }
+        List<LoanSlipDto> dtos = new ArrayList<>();
+        for (LoanSlip loanSlip : loanSlipService.getByIdOrReader(id, reader)){
+            dtos.add(new LoanSlipDto(loanSlip));
+        }
+        modelAndView.addObject("id", id );
+        modelAndView.addObject("idReader", idReader);
+        modelAndView.addObject("loanSlips", dtos);
+        return modelAndView;
+    }
 
     @PostMapping("/api/create-loan")
     public ResponseEntity createLoan(@RequestBody CreateLoanSlip createLoanSlip) {
@@ -79,6 +95,7 @@ public class SlipController {
                 Book book = bookService.getByBookCode(bookCode);
                 if (book != null) {
                     books.add(book);
+                    book.setRemainingNumber(book.getRemainingNumber()+1);
                 }
             }
         }
@@ -89,6 +106,10 @@ public class SlipController {
         loanSlip.setDueDate(dueDate);
         loanSlip.setStatus("dang muon");
         loanSlipService.createdLoanSlip(loanSlip);
+        for (Book book: loanSlip.getBookSet()){
+            book.setRemainingNumber(book.getRemainingNumber()+1);
+            bookService.updateBook(book);
+        }
         LoanSlipDto response = new LoanSlipDto(loanSlip);
         return ResponseEntity.ok(response);
     }
@@ -98,4 +119,6 @@ public class SlipController {
         Book book = bookService.getByBookCode(code);
         return ResponseEntity.ok(book);
     }
+
+
 }
