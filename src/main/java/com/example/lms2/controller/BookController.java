@@ -12,47 +12,31 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 @Controller
 public class BookController {
-
     @Autowired
     BookService bookService;
-    @GetMapping("/home/book/books")
-    public ModelAndView getBook(@RequestParam(defaultValue = "0") Integer pageNo,
-                                @RequestParam(defaultValue = "10") Integer pageSize) {
-        Page<Book> books = bookService.getAll(pageNo, pageSize);
-        ModelAndView modelAndView = new ModelAndView("book-view/book");
-        modelAndView.addObject("books", books);
-        return modelAndView;
-    }
-    @GetMapping("/home/book/add-book")
-    public String getAddBook() {
-        return "book-view/add-book";
-    }
-
 
     @PostMapping("/home/book/add-book")
-    public ModelAndView addBook(@ModelAttribute() Book book){
+    public ModelAndView addBook(@ModelAttribute() Book book, @RequestParam("username") String username){
         ModelAndView modelAndView =new ModelAndView("book-view/add-book");
         if(bookService.checkBook(book)) {
             bookService.createdBook(book);
             modelAndView.addObject("successMsg", "Success add a new book!");
+
         }
         else {
             modelAndView.addObject("errorMsg", "Fail add a book. The book code is exist!");
         }
+        modelAndView.addObject("username", username);
         return modelAndView;
     }
 
-    @GetMapping("/home/book/find-book")
-    public String getFindBook() {
-        return "book-view/find-book";
-    }
-
     @PostMapping ("/home/book/find-book")
-    public ModelAndView searchBook(@RequestParam("keyword") String keyword) {
+    public ModelAndView searchBook(@RequestParam("keyword") String keyword, @RequestParam("username") String username) {
         List<Book> books = bookService.searchBook(keyword);
         ModelAndView modelAndView = new ModelAndView( "book-view/find-book");
         modelAndView.addObject("books", books);
         modelAndView.addObject("keyword", keyword);
+        modelAndView.addObject("username", username);
         return modelAndView;
     }
 }

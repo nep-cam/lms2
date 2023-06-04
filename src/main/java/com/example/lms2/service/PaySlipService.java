@@ -1,9 +1,11 @@
 package com.example.lms2.service;
 
 import com.example.lms2.entity.Book;
+import com.example.lms2.entity.Librarian;
 import com.example.lms2.entity.LoanSlip;
 import com.example.lms2.entity.PaySlip;
 import com.example.lms2.repository.BookRepository;
+import com.example.lms2.repository.LibrarianRepository;
 import com.example.lms2.repository.LoanSlipRepository;
 import com.example.lms2.repository.PaySlipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ public class PaySlipService {
     private LoanSlipRepository loanSlipRepository;
     @Autowired
     private BookRepository bookRepository;
+    @Autowired
+    LibrarianRepository librarianRepository;
 
     public PaySlip createdPaySlip(PaySlip paySlip) {
         return paySlipRepository.save(paySlip);
@@ -59,9 +63,11 @@ public class PaySlipService {
         return bookToPay;
     }
 
-    public PaySlip createPaySlip(Long idSlip, List<String> bookCodes) {
+    public PaySlip createPaySlip(Long idSlip, List<String> bookCodes, String librarianName) {
         PaySlip paySlip = new PaySlip();
         LoanSlip loanSlip = loanSlipRepository.findById(idSlip).orElse(null);
+
+        Librarian librarian = librarianRepository.findByFullName(librarianName);
 
         Set<Book> bookSet = new HashSet<>();
         for (String code : bookCodes) {
@@ -71,10 +77,11 @@ public class PaySlipService {
             }
         }
 
-        if(loanSlip != null && bookSet != null){
+        if(loanSlip != null && bookSet != null && librarian!=null){
             paySlip.setLoanSlip(loanSlip);
             paySlip.setCreatedDate(LocalDateTime.now());
             paySlip.setBookSet(bookSet);
+            paySlip.setLibrarian(librarian);
             paySlipRepository.save(paySlip);
         }
         return paySlip;

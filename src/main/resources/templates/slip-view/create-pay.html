@@ -1,104 +1,145 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Hệ thống quản lý thư viện</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/layout/header.css}">
+    <link rel="stylesheet" th:href="@{/css/layout/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/layout/menu.css}">
+    <link rel="stylesheet" th:href="@{/css/layout/content.css}">
+    <link rel="stylesheet" th:href="@{/css/slip/create-pay.css}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
           integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
+
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand h3 ml-auto" href="#"><b>Hệ thống quản lý thư viện</b></a>
-    <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{/logout}">Logout</a>
-        </li>
-    </ul>
-</nav>
+<div class="header d-flex justify-content-between">
+    <h5>Quản lý trả sách</h5>
+    <div>
+        <strong><a class="text-success" th:text="${username}">Username</a></strong>
+        <a class="text-danger" th:href="@{/logout}">Đăng xuất</a>
+    </div>
+</div>
 
-<div class="container">
-    <div class="row mt-4">
-        <div class="col-md-2.5">
-            <div class="list-group">
-                <a th:href="@{/home/pay-slip/pay-slips}" class="list-group-item list-group-item-action border-0">
-                    <i class="fas fa-book mr-2 text-primary"></i> <b class="text-primary">Quản lý trả sách</b>
-                </a>
-                <a th:href="@{/home/pay-slip/create-pay}" class="list-group-item list-group-item-action border-0">
-                    <i class="fas fa-plus mr-2"></i> Trả sách
-                </a>
-                <a th:href="@{/home/pay-slip/find-pay}" class="list-group-item list-group-item-action border-0">
-                    <i class="fas fa-search mr-2"></i> Tìm kiếm
-                </a>
+<div class="d-flex">
+    <div class="list-group">
+        <div class="sidebar-img">
+            <img th:src="@{/css/assets/logo.png}" alt="">
 
-                <a th:href="@{/home}" class="list-group-item list-group-item-action border-0">
-                    <i class="fas fa-home mr-2"></i> Quay lại trang chủ
-                </a>
-            </div>
         </div>
-        <div class="col-md-9">
-            <h3 class="mt-4">Phiếu trả sách</h3>
-            <span> Thời gian: </span><span th:text="${datetime}"></span>
-            <hr>
+        <a th:href="@{/home/pay-slip/pay-slips(username=${username})}" class="list-group-item list-group-item-action border-0">
+            <i class="fas fa-book mr-2 text-primary"></i> Quản lý trả sách
+        </a>
+        <a th:href="@{/home/pay-slip/create-pay(username=${username})}" class="list-group-item list-group-item-action border-0">
+            <i class="fas fa-plus mr-2 text-primary"></i> <b class="text-primary">Trả sách</b>
+        </a>
+        <a th:href="@{/home/pay-slip/find-pay(username=${username})}" class="list-group-item list-group-item-action border-0">
+            <i class="fas fa-search mr-2"></i> Tìm kiếm
+        </a>
 
-            <div style="display: none" id="success-msg" class="alert alert-success alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                <strong></strong>
-            </div>
+        <a th:href="@{/home(username=${username})}" class="list-group-item list-group-item-action border-0">
+            <i class="fas fa-home mr-2"></i> Quay lại trang chủ
+        </a>
+    </div>
+    <div class="content">
+        <div class="d-flex">
+            <div class="col-8">
+                <span> Thời gian: </span><span th:text="${datetime}"></span>
+                <hr>
 
-            <label>Trả sách cho mã phiếu mượn sau</label>
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" id="idSlip"
-                       placeholder="Nhập mã phiếu mượn">
-                <div class="input-group-append">
-                    <button class="btn btn-primary" type="button" onclick="findLoanSlip()"><i class="fas fa-search"></i>
-                        Tìm kiếm
-                    </button>
+                <div style="display: none" id="success-msg" class="alert alert-success alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong></strong>
                 </div>
-            </div>
-            </form>
 
-            <div class="border">
-                <div class="container mt-3">
-                    <div id="loan-slip">
-                        <h5><b>Phiếu mượn</b></h5>
-                        <div></div>
-                        <!--                        <p th:text="${loanSlip.id}">Mã phiếu mượn:</p>-->
-                        <!--                        <p th:text="${loanSlip.librarian}">Người lập phiếu (thủ thư):</p>-->
-                        <!--                        <p th:text="${loanSlip.reader}">Người mượn (độc giả):</p>-->
-                        <!--                        <p th:text="${loanSlip.createDate}">Ngày mượn: </p>-->
-                        <!--                        <p th:text="${loanSlip.dueDate}">Hạn mượn: </p>-->
-                        <!--                        <p th:text="${loanSlip.books}">Danh sách mượn: </p>-->
-                    </div>
-                    <hr>
-                    <div>
-                        <p><b>Danh sách sách chưa trả trong phiếu mượn</b></p>
-                        <table class="table table-striped" id="books-to-pay">
-                            <thead>
-                            <tr>
-                                <th>Mã Sách</th>
-                                <th>Tên Sách</th>
-                                <th>#</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
-                    <form class="mb-3">
-                        <button type="button" onclick="createPaySlip()" class="btn btn-primary">Trả sách</button>
-                        <button class="btn btn-primary" type="button" onclick="window.location.reload();">Tải lại
-                            trang
+                <label>Trả sách cho mã phiếu mượn sau</label>
+                <div class="pay-search input-group mb-3">
+                    <input type="text" class="form-control" id="idSlip" placeholder="Nhập mã phiếu mượn" autofocus>
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button" onclick="findLoanSlip()"><i
+                                class="fas fa-search"></i>
                         </button>
-                    </form>
+                    </div>
                 </div>
+                </form>
 
+                <div class="border">
+                    <div class="container mt-3">
+                        <div id="loan-slip">
+                            <h5><b>Phiếu mượn</b></h5>
+                            <div></div>
+                            <!--                        <p th:text="${loanSlip.id}">Mã phiếu mượn:</p>-->
+                            <!--                        <p th:text="${loanSlip.librarian}">Người lập phiếu (thủ thư):</p>-->
+                            <!--                        <p th:text="${loanSlip.reader}">Người mượn (độc giả):</p>-->
+                            <!--                        <p th:text="${loanSlip.createDate}">Ngày mượn: </p>-->
+                            <!--                        <p th:text="${loanSlip.dueDate}">Hạn mượn: </p>-->
+                            <!--                        <p th:text="${loanSlip.books}">Danh sách mượn: </p>-->
+                        </div>
+                        <hr>
+                        <div>
+                            <p><b>Danh sách sách chưa trả trong phiếu mượn</b></p>
+                            <table class="table table-striped" id="books-to-pay">
+                                <thead>
+                                <tr>
+                                    <th>Mã Sách</th>
+                                    <th>Tên Sách</th>
+                                    <th>#</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <form class="mt-3 d-flex justify-content-center">
+                            <button type="button" onclick="createPaySlip()" class="btn btn-primary form-btn">Trả
+                                sách</button>
+                            <button class="btn btn-primary form-btn" type="button" onclick="window.location.reload();">Tải
+                                lại
+                                trang
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
+            <div class="col-4 menu">
+                <div class="menu-items">
+                    <div class="menu-logo">
+                        <h4>Hệ thống quản lý thư viện</h4>
+                    </div>
+                    <div class="d-flex flex-wrap justify-content-center mt-4">
+                        <div class="menu-item menu-book bg-danger">
+                            <i class="fa-solid fa-book"></i>
+                            <br>
+                            <a class="text-light" th:href="@{/home/book/books(username=${username})}">Quản lý sách</a>
+                        </div>
+                        <div class="menu-item menu-reader bg-primary">
+                            <i class="fa-solid fa-glasses"></i>
+                            <br>
+                            <a class="text-light" th:href="@{/home/reader/readers(username=${username})}">Quản lý độc
+                                giả</a>
+                        </div>
 
+                        <div class="menu-item menu-borrow bg-warning">
+                            <i class="fa-solid fa-right-left"></i>
+                            <br>
+                            <a class="text-light" th:href="@{/home/loan-slip/loan-slips(username=${username})}">Mượn
+                                sách</a>
+                        </div>
+                        <div class="menu-item menu-return bg-success">
+                            <i class="fa-solid fa-right-left"></i>
+                            <br>
+                            <a class="text-light" th:href="@{/home/pay-slip/pay-slips(username=${username})}">Trả
+                                sách</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -108,7 +149,7 @@
 
     function findLoanSlip() {
         var idSlip = $("#idSlip").val();
-        alert(idSlip);
+        console.log(idSlip);
         $.post({
             url: "/api/pay-slip/find-loan-slip",
             dataType: "json",
@@ -164,7 +205,8 @@
     }
 
     function createPaySlip() {
-        var idSlip = $("#idSlip").val();
+        var idSlip = $("#idSlip").text();
+        var librarianName = $("#username").text();
         var bookCodes = [];
 
         $("#books-to-pay tbody tr").each(function () {
@@ -177,6 +219,8 @@
 
         });
         var formData = new FormData;
+        formData.append("librarianName", librarianName);
+
         formData.append("idSlip", idSlip);
         formData.append("books", bookCodes);
 
@@ -198,4 +242,5 @@
         })
     }
 </script>
+
 </html>

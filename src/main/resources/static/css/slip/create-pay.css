@@ -1,0 +1,22 @@
+.content {
+    margin-left: 35px;
+    width: 100%;
+}
+
+.pay-search {
+    width: 100%; 
+}
+
+.pay-search input {
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px solid #0a1d54;
+}
+
+.form-btn {
+    display: block;
+    border-radius: 20px;
+    padding: 8px 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin: 10px;
+}

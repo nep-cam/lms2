@@ -20,4 +20,12 @@ public class LibrarianService {
     public Librarian getById(Long id){
         return librarianRepository.findById(id).orElse(null);
     }
+
+    public Librarian getByFullName(String librarianName) {
+        return librarianRepository.findByFullName(librarianName);
+    }
+
+    public Librarian getByUserName(String username) {
+        return librarianRepository.findByUsername(username);
+    }
 }

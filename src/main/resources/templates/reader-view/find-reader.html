@@ -1,92 +1,120 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
   <title>Hệ thống quản lý thư viện</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" th:href="@{/css/layout/header.css}">
+  <link rel="stylesheet" th:href="@{/css/layout/sidebar.css}">
+  <link rel="stylesheet" th:href="@{/css/layout/menu.css}">
+  <link rel="stylesheet" th:href="@{/css/layout/content.css}">
+  <link rel="stylesheet" th:href="@{/css/reader/find-reader.css}">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
+
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-  <a class="navbar-brand h3 ml-auto" href="#"><b>Hệ thống quản lý thư viện</b></a>
-  <ul class="navbar-nav ml-auto">
-    <li class="nav-item">
-      <a class="nav-link" th:href="@{/logout}">Logout</a>
-    </li>
-  </ul>
-</nav>
-<div class="container">
+<div class="header d-flex justify-content-between">
+  <h5>Tìm độc giả</h5>
+  <div>
+    <strong><a class="text-success" th:text="${username}">Username</a></strong>
+    <a class="text-danger" th:href="@{/logout}">Đăng xuất</a>
+  </div>
+</div>
+<div class="d-flex">
+  <div class="list-group">
+    <div class="sidebar-img">
+      <img th:src="@{/css/assets/logo.png}" alt="">
 
-  <div class="row mt-4">
-    <div class="col-md-2.5">
-      <div class="list-group">
-        <a th:href="@{/home/reader/readers}"  class="list-group-item list-group-item-action border-0">
-          <i class="fas fa-book mr-2 "></i>Quản lý độc giả
-        </a>
-        <a th:href="@{/home/reader/find-reader}" class="list-group-item list-group-item-action border-0">
-          <i class="fas fa-search mr-2 text-primary"> </i> <b class="text-primary">Tìm kiếm độc giả</b>
-        </a>
-        <a th:href="@{/home/reader/add-reader}" class="list-group-item list-group-item-action border-0">
-          <i class="fas fa-plus mr-2"></i> Đăng ký độc giả mới
-        </a>
-
-        <a th:href="@{/home}" class="list-group-item list-group-item-action border-0">
-          <i class="fas fa-home mr-2"></i> Quay lại trang chủ
-        </a>
-      </div>
     </div>
-    <div class="col-md-9">
-      <h3 class="mt-4">Tìm kiếm độc giả</h3>
-      <div class="row mt-4">
-        <div class="col-md-6">
-          <form th:action="@{/home/reader/find-reader}" method="post">
-            <div class="input-group mb-3">
-              <input type="text" class="form-control" th:value="${idReader}" name="idReader" placeholder="mã độc giả">
-              <input type="text" class="form-control" th:value="${nameReader}" name="nameReader" placeholder="tên độc giả">
-              <div class="input-group-append">
-                <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> Tìm kiếm
-                </button>
-              </div>
+    <a th:href="@{/home/reader/readers(username=${username})}" class="list-group-item list-group-item-action border-0">
+      <i class="fas fa-book mr-2 "></i>Quản lý độc giả
+    </a>
+    <a th:href="@{/home/reader/find-reader(username=${username})}" class="list-group-item list-group-item-action border-0">
+      <i class="fas fa-search mr-2 text-primary"> </i> <b class="text-primary">Tìm kiếm độc giả</b>
+    </a>
+    <a th:href="@{/home/reader/add-reader(username=${username})}" class="list-group-item list-group-item-action border-0">
+      <i class="fas fa-plus mr-2"></i> Đăng ký độc giả mới
+    </a>
+
+    <a th:href="@{/home(username=${username})}" class="list-group-item list-group-item-action border-0">
+      <i class="fas fa-home mr-2"></i> Quay lại trang chủ
+    </a>
+  </div>
+  <div class="content">
+    <div class="d-flex">
+      <div class="col-8">
+        <form th:action="@{/home/reader/find-reader(username=${username})}" method="post">
+          <div class="find-search input-group mb-3">
+            <input type="text" class="form-control" th:value="${idReader}" name="idReader" placeholder="mã độc giả"
+                   autofocus>
+            <input type="text" class="form-control" th:value="${nameReader}" name="nameReader"
+                   placeholder="tên độc giả">
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
             </div>
-          </form>
+          </div>
+        </form>
+        <!-- Kết quả tìm kiếm -->
+        <h6 class="mt-4">Kết quả tìm kiếm</h6>
+        <div class="find-results">
+          <table class="table-results">
+            <tr>
+              <th style="width: 100px;">Mã</th>
+              <th style="width: 200px;">Họ tên</th>
+              <th style="width: 80px;">Ngày sinh</th>
+              <th style="width: 100px;">CCCD</th>
+              <th style="width: 50px;">SĐT</th>
+              <th style="width: 100px;">Địa chỉ</th>
+              <th style="width: 50px;">Ngày lập</th>
+            </tr>
+            <tr th:each="reader: ${readers}">
+              <td th:text="${reader.id}">12345</td>
+              <td th:text="${reader.fullName}">Trương Thị Khánh Huyền</td>
+              <td th:text="${reader.birthday}">01/04/2002</td>
+              <td th:text="${reader.cccd}">001304035432</td>
+              <td th:text="${reader.phoneNumber}">0125432345</td>
+              <td th:text="${reader.address}">176 Trương Định, Hoàng Mai, Hà Nội</td>
+              <td th:text="${reader.createdDate}">03/06/2023</td>
+            </tr>
+          </table>
         </div>
       </div>
-      <!-- Kết quả tìm kiếm -->
-      <h3 class="mt-4">Kết quả tìm kiếm</h3>
-      <div class="content">
-        <div class="row mt-4">
-          <div class="col-md-12">
-            <table class="table table-striped">
+      <div class="col-4 menu">
+        <div class="menu-items">
+          <div class="menu-logo">
+            <h4>Hệ thống quản lý thư viện</h4>
+          </div>
+          <div class="d-flex flex-wrap justify-content-center mt-4">
+            <div class="menu-item menu-book bg-danger">
+              <i class="fa-solid fa-book"></i>
+              <br>
+              <a class="text-light" th:href="@{/home/book/books(username=${username})}">Quản lý sách</a>
+            </div>
+            <div class="menu-item menu-reader bg-primary">
+              <i class="fa-solid fa-glasses"></i>
+              <br>
+              <a class="text-light" th:href="@{/home/reader/readers(username=${username})}">Quản lý độc
+                giả</a>
+            </div>
 
-              <thead>
-              <tr>
-                <th>STT</th>
-                <th>Mã độc giả</th>
-                <th>Họ tên</th>
-                <th>Ngày sinh</th>
-                <th>CCCD</th>
-                <th>SĐT</th>
-                <th>Địa chỉ</th>
-                <th>Ngày lập</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr th:each="reader, index : ${readers}">
-                <td th:text="${index.index + 1 }"></td>
-                <td th:text="${reader.id}"></td>
-                <td th:text="${reader.fullName}"></td>
-                <td th:text="${reader.birthday}"></td>
-                <td th:text="${reader.cccd}"></td>
-                <td th:text="${reader.phoneNumber}"></td>
-                <td th:text="${reader.address}"></td>
-                <td th:text="${reader.createdDate}"></td>
-
-              </tr>
-              </tbody>
-            </table>
+            <div class="menu-item menu-borrow bg-warning">
+              <i class="fa-solid fa-right-left"></i>
+              <br>
+              <a class="text-light" th:href="@{/home/loan-slip/loan-slips(username=${username})}">Mượn
+                sách</a>
+            </div>
+            <div class="menu-item menu-return bg-success">
+              <i class="fa-solid fa-right-left"></i>
+              <br>
+              <a class="text-light" th:href="@{/home/pay-slip/pay-slips(username=${username})}">Trả
+                sách</a>
+            </div>
           </div>
         </div>
       </div>

@@ -20,6 +20,12 @@ public class Librarian {
     private Long id;
     @Column(name="ho_ten")
     private String fullName;
+    @Column(name = "email")
+    private String email;
+    @Column(name="phone")
+    private String phone;
+    @Column(name="address")
+    private String address;
     @Column(name = "ten_dang_nhap")
     private String username;
     @Column(name="mat_khau")

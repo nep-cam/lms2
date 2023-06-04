@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LibrarianRepository extends JpaRepository<Librarian, Long> {
     Librarian findByUsername(String username);
+    Librarian findByFullName(String fullName);
+
 }

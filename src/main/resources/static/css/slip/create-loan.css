@@ -1,0 +1,53 @@
+.form {
+    width: 100%;
+    padding: 0 60px;
+}
+
+.form-item input {
+    border-radius: 25px;
+    padding: 25px;
+    margin: 25px 0;
+    border: 1.5px #0a1d54 solid;
+    position: relative;
+    background-color: AliceBlue;
+
+}
+
+.form-item input:focus {
+    background-color: AliceBlue;
+
+}
+
+.form-item label {
+    position: absolute;
+    z-index: 10;
+    padding: 0 5px;
+    font-size: 0.8rem;
+    transform: translate(20px, -10px);
+    background-color: AliceBlue;
+}
+
+.input-group-append button{
+    display: block;
+    border-radius: 20px;
+    padding: 8px 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.form-btn {
+    display: block;
+    border-radius: 20px;
+    padding: 8px 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin: 10px;
+}
+
+.table {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table thead {
+    background-color: #0a1d54;
+    color: #fff;
+}

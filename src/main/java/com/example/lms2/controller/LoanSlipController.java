@@ -37,36 +37,11 @@ public class LoanSlipController {
     LibrarianService librarianService;
     @Autowired
     LoanSlipService loanSlipService;
-    @GetMapping("/home/loan-slip/create-loan")
-    public String getCreateLoan(Model model) {
-        LocalDate date = LocalDate.now();
-        LocalDate dueDate = date.plusDays(7);
-        model.addAttribute("createDate", date);
-        model.addAttribute("dueDate", dueDate);
-        return "slip-view/create-loan";
-    }
 
-    @GetMapping("/home/loan-slip/loan-slips")
-    public ModelAndView getLoanSlip(@RequestParam(defaultValue = "0") Integer pageNo,
-                              @RequestParam(defaultValue = "10") Integer pageSize) {
-        ModelAndView modelAndView = new ModelAndView( "slip-view/loan-slip");
-        Page<LoanSlip> loanSlips = loanSlipService.getAll(pageNo, pageSize);
-        List<LoanSlipDto> loans = new ArrayList<>();
-        for(LoanSlip loanSlip : loanSlips.getContent()){
-            loans.add(new LoanSlipDto(loanSlip));
-        }
-        Page<LoanSlipDto> dtos= new PageImpl<>(loans, loanSlips.getPageable(), loanSlips.getTotalElements());
-        modelAndView.addObject("loanSlips", dtos);
-        return modelAndView;
-    }
-
-    @GetMapping("/home/loan-slip/find-loan")
-    public String getFindLoan() {
-        return "slip-view/find-loan";
-    }
     @PostMapping("/home/loan-slip/find-loan")
-    public ModelAndView findLoan(@RequestParam(value = "id",required = false) Long id,
-                                 @RequestParam(value = "idReader", required = false) Long idReader){
+    public ModelAndView findLoan(@RequestParam(value = "idSlip",required = false) Long id,
+                                 @RequestParam(value = "idReader", required = false) Long idReader,
+                                 @RequestParam("username") String username){
         ModelAndView modelAndView = new ModelAndView("slip-view/find-loan");
         Reader reader = null;
         if(idReader != null){
@@ -76,16 +51,18 @@ public class LoanSlipController {
         for (LoanSlip loanSlip : loanSlipService.getByIdOrReader(id, reader)){
             dtos.add(new LoanSlipDto(loanSlip));
         }
-        modelAndView.addObject("id", id );
+        modelAndView.addObject("idSlip", id );
         modelAndView.addObject("idReader", idReader);
         modelAndView.addObject("loanSlips", dtos);
+        modelAndView.addObject("username", username);
+
         return modelAndView;
     }
 
     @PostMapping("/api/create-loan")
     public ResponseEntity createLoan(@RequestBody CreateLoanSlip createLoanSlip) {
         LoanSlip loanSlip = new LoanSlip();
-        Librarian librarian = librarianService.getById(createLoanSlip.getLibrarianId());
+        Librarian librarian = librarianService.getByFullName(createLoanSlip.getLibrarianName());
         Reader reader = readerService.getById(createLoanSlip.getReaderId());
         LocalDateTime creatDate = LocalDateTime.now();
         LocalDate dueDate= createLoanSlip.getDueDate();

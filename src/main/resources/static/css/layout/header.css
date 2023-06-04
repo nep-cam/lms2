@@ -1,0 +1,17 @@
+
+.header {
+    position: absolute;
+    width: 80vw;
+    top: 0;
+    right: 0;
+    padding: 20px 50px;
+}
+
+.header h5 {
+    font-weight: 600;
+}
+
+.header a {
+    cursor: pointer;
+    font-weight: 400;
+}

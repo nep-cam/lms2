@@ -1,0 +1,72 @@
+
+.content {
+    margin-left: 30px;
+    width: 100%;
+}
+
+.find-search {
+    width: 100%; 
+}
+
+.find-search input {
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px solid #0a1d54;
+}
+
+.input-group-append button{
+    display: block;
+    border-radius: 20px;
+    padding: 8px 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.find-results {
+    overflow-x: scroll;
+    overflow-y: auto;
+    width: fit-content;
+    height: fit-content;
+    margin-top: 20px;
+    padding-bottom: 50px;
+}
+
+.find-results::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.find-results::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
+}
+
+.find-results::-webkit-scrollbar-thumb {
+    background-color: #000;
+    border-radius: 5px;
+    outline: 1px solid slategrey;
+}
+
+.table-results {
+    text-align: center;
+    width: fit-content;
+    border-radius: 8px;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.table-results tr:nth-child(odd) {
+    background-color: rgb(214, 225, 241);
+}
+
+.table-results tr th {
+    background-color: #3b4e87;
+    color: #fff;
+}
+
+.table-results tr th, 
+.table-results tr td {
+    padding: 5px 10px;
+}
+
+.table-results td {
+    vertical-align: top;
+}

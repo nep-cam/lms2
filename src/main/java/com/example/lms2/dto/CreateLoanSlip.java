@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 public class CreateLoanSlip {
-    private Long librarianId;
+    private String librarianName;
     private Long readerId;
     private LocalDate createDate;
     private LocalDate dueDate;

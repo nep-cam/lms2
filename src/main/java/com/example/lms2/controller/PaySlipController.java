@@ -36,27 +36,10 @@ public class PaySlipController {
     PaySlipService paySlipService;
     @Autowired
     LoanSlipService loanSlipService;
-    @GetMapping("/home/pay-slip/pay-slips")
-    public ModelAndView getPaySlip(@RequestParam(defaultValue = "0") Integer pageNo,
-                                    @RequestParam(defaultValue = "10") Integer pageSize) {
-        ModelAndView modelAndView = new ModelAndView( "slip-view/pay-slip");
-        Page<PaySlip> paySlips = paySlipService.getAll(pageNo, pageSize);
-        List<PaySlipDto> dtos1 = new ArrayList<>();
-        for(PaySlip loanSlip : paySlips.getContent()){
-            dtos1.add(new PaySlipDto(loanSlip));
-        }
-        Page<PaySlipDto> dtos= new PageImpl<>(dtos1, paySlips.getPageable(), paySlips.getTotalElements());
-        modelAndView.addObject("paySlips", dtos);
-        return modelAndView;
-    }
 
-    @GetMapping("/home/pay-slip/find-pay")
-    public String getFindPay() {
-        return "slip-view/find-pay";
-    }
     @PostMapping("/home/pay-slip/find-pay")
     public ModelAndView findPaySlip(@RequestParam(value = "idPay",required = false) Long idPay,
-                                    @RequestParam(value = "idLoan", required = false) Long idLoan){
+                                    @RequestParam(value = "idLoan", required = false) Long idLoan,@RequestParam("username") String username){
         ModelAndView modelAndView = new ModelAndView("slip-view/find-pay");
         LoanSlip loanSlip = null;
         if(idLoan != null){
@@ -69,16 +52,12 @@ public class PaySlipController {
         modelAndView.addObject("idPay", idPay );
         modelAndView.addObject("idLoan", idLoan);
         modelAndView.addObject("paySlips", dtos);
+        modelAndView.addObject("username", username);
+
         return modelAndView;
     }
 
-    @GetMapping("/home/pay-slip/create-pay")
-    public String getCreatePay(Model model){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-        String date = LocalDateTime.now().format(formatter);
-        model.addAttribute("datetime", date);
-        return "slip-view/create-pay";
-    }
+
 
     @PostMapping("/home/pay-slip/create-pay")
     public ModelAndView findLoanSlip(@RequestParam("idSlip") Long id){
@@ -105,8 +84,8 @@ public class PaySlipController {
         return ResponseEntity.ok(books);
     }
     @PostMapping("/api/create-pay")
-    public ResponseEntity createPaySlip(@RequestParam Long idSlip, @RequestParam List<String> books){
-        PaySlip paySlip = paySlipService.createPaySlip(idSlip, books);
+    public ResponseEntity createPaySlip(@RequestParam Long idSlip, @RequestParam List<String> books, @RequestParam String librarianName){
+        PaySlip paySlip = paySlipService.createPaySlip(idSlip, books, librarianName);
         for (Book book: paySlip.getBookSet()){
             book.setRemainingNumber(book.getRemainingNumber()-1);
             bookService.updateBook(book);

@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Hệ thống quản lý thư viện</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/layout/header.css}">
+    <link rel="stylesheet" th:href="@{/css/layout/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/layout/menu.css}">
+    <link rel="stylesheet" th:href="@{/css/layout/content.css}">
+    <link rel="stylesheet" th:href="@{/css/reader/add-reader.css}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
@@ -11,111 +17,112 @@
           integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
 </head>
+
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand h3 ml-auto" href="#"><b>Hệ thống quản lý thư viện</b></a>
-    <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-            <a class="nav-link" th:href="@{/logout}">Logout</a>
-        </li>
-    </ul>
-</nav>
-<div class="container">
+<div class="header d-flex justify-content-between">
+    <h5>Thêm độc giả</h5>
+    <div>
+        <strong><a class="text-success" th:text="${username}">Username</a></strong>
+        <a class="text-danger" th:href="@{/logout}">Đăng xuất</a>
+    </div>
+</div>
+<div class="d-flex">
+    <div class="list-group">
+        <div class="sidebar-img">
+            <img th:src="@{/css/assets/logo.png}" alt="">
 
-    <div class="row mt-4">
-        <div class="col-md-2.5">
-            <div class="list-group">
-                <a th:href="@{/home/reader/readers}" class="list-group-item list-group-item-action border-0">
-                    <i class="fas fa-book mr-2"></i>Quản lý độc giả
-                </a>
-                <a th:href="@{/home/reader/find-reader}" class="list-group-item list-group-item-action border-0">
-                    <i class="fas fa-search mr-2"></i> Tìm kiếm độc giả
-                </a>
-                <a th:href="@{/home/reader/add-reader}" class="list-group-item list-group-item-action border-0">
-                    <i class="fas fa-plus mr-2 text-primary"></i><b class="text-primary">Đăng ký độc giả mới</b>
-                </a>
-                <a th:href="@{/home}" class="list-group-item list-group-item-action border-0">
-                    <i class="fas fa-home mr-2"></i> Quay lại trang chủ
-                </a>
-            </div>
         </div>
-        <div class="col-md-9">
-            <h3 class="mt-4">Điền thông tin độc giả</h3>
-            <div th:if="${successMsg}!= null" class="alert alert-success alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                <strong th:text="${successMsg}"></strong>
-            </div>
+        <a th:href="@{/home/reader/readers(username=${username})}"
+           class="list-group-item list-group-item-action border-0">
+            <i class="fas fa-book mr-2"></i>Quản lý độc giả
+        </a>
+        <a th:href="@{/home/reader/find-reader(username=${username})}"
+           class="list-group-item list-group-item-action border-0">
+            <i class="fas fa-search mr-2"></i> Tìm kiếm độc giả
+        </a>
+        <a th:href="@{/home/reader/add-reader(username=${username})}"
+           class="list-group-item list-group-item-action border-0">
+            <i class="fas fa-plus mr-2 text-primary"></i><b class="text-primary">Đăng ký độc giả mới</b>
+        </a>
+        <a th:href="@{/home(username=${username})}" class="list-group-item list-group-item-action border-0">
+            <i class="fas fa-home mr-2"></i> Quay lại trang chủ
+        </a>
+    </div>
+    <div class="content">
+        <div class="d-flex">
+            <div class="col-8">
+                <div th:if="${successMsg}!= null" class="alert alert-success alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong th:text="${successMsg}"></strong>
+                </div>
 
-            <div th:if="${errorMsg}!= null" class="alert alert-danger alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                <strong th:text="${errorMsg}"></strong>
-            </div>
-            <div class="row mt-4">
-                <div class="col-md-6">
-                    <form method="post" th:action="@{/home/reader/add-reader}" id="formReader">
-                        <div class="mb-3">
+                <div th:if="${errorMsg}!= null" class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong th:text="${errorMsg}"></strong>
+                </div>
+                <div class="add-form">
+                    <form method="post" th:action="@{/home/reader/add-reader(username=${username})}" id="formReader">
+                        <div class="form-item">
                             <label for="fullName" class="form-label">Họ tên</label>
-                            <input type="text" class="form-control" id="fullName" name="fullName"
-                                   placeholder="Nhập họ tên đầy đủ">
+                            <input type="text" class="form-control" id="fullName" name="fullName" placeholder=""
+                                   autofocus>
                         </div>
-                        <div class="mb-3">
+                        <div class="form-item">
                             <label for="birthday" class="form-label">Ngày sinh</label>
                             <input type="date" class="form-control" id="birthday" name="birthday" placeholder="">
                         </div>
-                        <div class="mb-3">
+                        <div class="form-item">
                             <label for="cccd" class="form-label">CCCD</label>
-                            <input type="text" class="form-control" id="cccd" name="cccd"
-                                   placeholder="Nhập căn cước công dân">
+                            <input type="text" class="form-control" id="cccd" name="cccd" placeholder="">
                         </div>
-                        <div class="mb-3">
+                        <div class="form-item">
                             <label for="phoneNumber" class="form-label">SĐT</label>
                             <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
-                                   placeholder="Nhập số điện thoại">
+                                   placeholder="">
                         </div>
-                        <div class="mb-3">
+                        <div class="form-item">
                             <label for="address" class="form-label">Địa chỉ</label>
-                            <input type="text" class="form-control" id="address" name="address"
-                                   placeholder="Nhập địa chỉ thường trú">
+                            <input type="text" class="form-control" id="address" name="address" placeholder="">
                         </div>
-                        <button type="submit" class="btn btn-primary">Đăng ký</button>
+                        <button type="submit" class="btn btn-primary mt-3 form-btn">Đăng ký</button>
                     </form>
+                </div>
+            </div>
+            <div class="col-4 menu">
+                <div class="menu-items">
+                    <div class="menu-logo">
+                        <h4>Hệ thống quản lý thư viện</h4>
+                    </div>
+                    <div class="d-flex flex-wrap justify-content-center mt-4">
+                        <div class="menu-item menu-book bg-danger">
+                            <i class="fa-solid fa-book"></i>
+                            <br>
+                            <a class="text-light" th:href="@{/home/book/books(username=${username})}">Quản lý sách</a>
+                        </div>
+                        <div class="menu-item menu-reader bg-primary">
+                            <i class="fa-solid fa-glasses"></i>
+                            <br>
+                            <a class="text-light" th:href="@{/home/reader/readers(username=${username})}">Quản lý độc
+                                giả</a>
+                        </div>
+
+                        <div class="menu-item menu-borrow bg-warning">
+                            <i class="fa-solid fa-right-left"></i>
+                            <br>
+                            <a class="text-light" th:href="@{/home/loan-slip/loan-slips(username=${username})}">Mượn
+                                sách</a>
+                        </div>
+                        <div class="menu-item menu-return bg-success">
+                            <i class="fa-solid fa-right-left"></i>
+                            <br>
+                            <a class="text-light" th:href="@{/home/pay-slip/pay-slips(username=${username})}">Trả
+                                sách</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 </body>
-<script>
-    $(document).ready(function () {
-        $('#formReader').validate({rules: {
-                fullName: {
-                    required: true
-
-                },
-                birthday: {
-                    required: true
-                },
-                cccd: {
-                    required: true
-                },
-                phoneNumber: {
-                    required: true
-                },
-                address: {
-                    required: true
-                }
-
-            }, messages: {
-                fullName: {
-                    required: 'Vui lòng nhập họ tên'
-                },
-                birthday: {required: 'Vui lòng nhập ngày sing'},
-                cccd: {required: 'vui lòng nhập CCCD'},
-                phoneNumber: {required: 'Vui lòng nhập số điện thoại'},
-                address: {required: 'Vui lòng nhập địa chỉ'}
-            }, submitHandler: function(form) {
-                form.submitHandler();
-            }})
-    })
-</script>
 </html>
